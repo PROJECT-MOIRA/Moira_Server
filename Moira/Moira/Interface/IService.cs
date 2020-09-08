@@ -61,7 +61,7 @@ namespace Moira.Interface
         /// <returns></returns>
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/job")]
-        Task<Response> WriteJob(string field, string description, int people_num, bool is_deadline, string writer, string contact);
+        Task<Response> WriteJob(string field, string description, int people_num, string is_deadline, string writer, string contact);
 
         /// <summary>
         /// 구인구직 게시글 삭제 API
@@ -86,9 +86,8 @@ namespace Moira.Interface
         /// <returns></returns>
         [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/job")]
-        Task<Response> UpdateJob(string field, string description, int people_num, bool is_deadline, string wrtier, string contact, int job_idx);
+        Task<Response> UpdateJob(string field, string description, int people_num, string is_deadline, string wrtier, string contact, int job_idx);
         #endregion
-
 
         #region Study_Service
         /// <summary>
@@ -112,7 +111,7 @@ namespace Moira.Interface
         /// <returns></returns>
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/study")]
-        Task<Response> WriteStudy(string subject, int people_num, string schedule_description, bool is_deadline, string writer, string contact);
+        Task<Response> WriteStudy(string subject, int people_num, string schedule_description, string is_deadline, string writer, string contact);
 
         ///// <summary>
         ///// 스터디 게시물 삭제 API
@@ -137,7 +136,7 @@ namespace Moira.Interface
         /// <returns></returns>
         [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/study")]
-        Task<Response> UpdateStudy(string subject, int people_num, string schedule_description, string writer, string contact, bool is_deadline, int study_idx);
+        Task<Response> UpdateStudy(string subject, int people_num, string schedule_description, string writer, string contact, string is_deadline, int study_idx);
         #endregion
     }
 

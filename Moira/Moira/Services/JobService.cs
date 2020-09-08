@@ -69,7 +69,7 @@ FROM
             }
         }
 
-        public async Task<Response> WriteJob(string field, string description, int people_num, bool isDeadline, string writer, string contact)
+        public async Task<Response> WriteJob(string field, string description, int people_num, string isDeadline, string writer, string contact)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
@@ -205,7 +205,7 @@ AND
             }
         }
 
-        public async Task<Response> UpdateJob(string field, string description, int people_num, bool is_deadline, string writer, string contact, int job_idx)
+        public async Task<Response> UpdateJob(string field, string description, int people_num, string is_deadline, string writer, string contact, int job_idx)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();

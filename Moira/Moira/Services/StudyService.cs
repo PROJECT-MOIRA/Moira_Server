@@ -6,7 +6,6 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Threading.Tasks;
 
@@ -69,7 +68,7 @@ FROM
             }
         }
 
-        public async Task<Response> WriteStudy(string subject, int people_num, string schedule_description, bool is_deadline, string writer, string contact)
+        public async Task<Response> WriteStudy(string subject, int people_num, string schedule_description, string is_deadline, string writer, string contact)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
@@ -205,7 +204,7 @@ AND
             }
         }
 
-        public async Task<Response> UpdateStudy(string subject, int people_num, string schedule_description, string writer, string contact, bool is_deadline, int study_idx)
+        public async Task<Response> UpdateStudy(string subject, int people_num, string schedule_description, string writer, string contact, string is_deadline, int study_idx)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
@@ -229,7 +228,7 @@ AND
                             model.schedule_description = schedule_description;
                             model.writer = writer;
                             model.contact = contact;
-                            // model.is_deadline = isDeadline;
+                            model.is_deadline = is_deadline;
                             model.study_idx = study_idx;
 
                             string updateSql = $@"
