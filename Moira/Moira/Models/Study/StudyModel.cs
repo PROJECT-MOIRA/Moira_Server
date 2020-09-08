@@ -12,6 +12,7 @@ namespace Moira.Models.Study
         public string subject { get; set; }
         public int people_num { get; set; }
         public string schedule_description { get; set; }
+        public bool is_deadline { get; set; }
         public string writer { get; set; }
         public string contact { get; set; }
     }

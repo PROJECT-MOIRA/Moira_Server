@@ -16,6 +16,7 @@ namespace Moira.Services
     {
         public DBManager<JobModel> jobDBManager = new DBManager<JobModel>();
 
+        #region Job_Service
         public async Task<Response<List<JobModel>>> GetAllJobs()
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
@@ -68,7 +69,7 @@ FROM
             }
         }
 
-        public async Task<Response> WriteJob(string field, string description, int peopleNum, bool isDeadline, string writer, string contact)
+        public async Task<Response> WriteJob(string field, string description, int people_num, bool isDeadline, string writer, string contact)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
@@ -76,7 +77,7 @@ FROM
             // Header에 토큰 값이 제대로 들어왔는지 확인 & 토큰이 유효한지 확인
             if (!(requestHeaderValue == null) && ComDef.jwtService.IsTokenValid(requestHeaderValue) == true)
             {
-                if (field != null && description != null && peopleNum.ToString().Length > 0 && isDeadline.ToString().Length > 0
+                if (field != null && description != null && people_num.ToString().Length > 0 && isDeadline.ToString().Length > 0
                     && field.Trim().Length > 0 && description.Trim().Length > 0)
                 {
                     try
@@ -88,7 +89,7 @@ FROM
                             var model = new JobModel();
                             model.field = field;
                             model.description = description;
-                            model.people_num = peopleNum;
+                            model.people_num = people_num;
                             model.is_deadline = isDeadline;
                             model.writer = writer;
                             model.contact = contact;
@@ -143,7 +144,7 @@ VALUES(
             }
         }
 
-        public async Task<Response> DeleteJob(string writer, int jobIdx)
+        public async Task<Response> DeleteJob(string writer, int job_idx)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
@@ -151,7 +152,7 @@ VALUES(
             // Header에 토큰 값이 제대로 들어왔는지 확인 & 토큰이 유효한지 확인
             if (!(requestHeaderValue == null) && ComDef.jwtService.IsTokenValid(requestHeaderValue) == true)
             {
-                if (jobIdx.ToString() != null && jobIdx.ToString().Length > 0 && writer != null && writer.Length > 0)
+                if (job_idx.ToString() != null && job_idx.ToString().Length > 0 && writer != null && writer.Length > 0)
                 {
                     try
                     {
@@ -160,7 +161,7 @@ VALUES(
                             db.Open();
 
                             var model = new JobModel();
-                            model.job_idx = jobIdx;
+                            model.job_idx = job_idx;
                             model.writer = writer;
 
                             string deleteSql = $@"
@@ -169,7 +170,7 @@ DELETE FROM
 WHERE
     writer = '{writer}'
 AND
-    job_idx = '{jobIdx}'    
+    job_idx = '{job_idx}'    
 ;";
                             if (await jobDBManager.DeleteAsync(db, deleteSql, model) == 1)
                             {
@@ -204,7 +205,7 @@ AND
             }
         }
 
-        public async Task<Response> UpdateJob(string field, string description, int peopleNum, bool isDeadline, string writer, string contact, int job_idx)
+        public async Task<Response> UpdateJob(string field, string description, int people_num, bool is_deadline, string writer, string contact, int job_idx)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
@@ -213,7 +214,7 @@ AND
             if (!(requestHeaderValue == null) && ComDef.jwtService.IsTokenValid(requestHeaderValue) == true)
             {
                 if (field != null && field.Trim().Length > 0 && description != null && description.Trim().Length > 0 &&
-                    peopleNum.ToString().Length > 0 && isDeadline.ToString().Length > 0 && writer != null && writer.Length > 0 &&
+                    people_num.ToString().Length > 0 && is_deadline.ToString().Length > 0 && writer != null && writer.Length > 0 &&
                     contact != null && contact.Length > 0)
                 {
                     try
@@ -226,8 +227,8 @@ AND
                             model.job_idx = job_idx;
                             model.field = field;
                             model.description = description;
-                            model.people_num = peopleNum;
-                            model.is_deadline = isDeadline;
+                            model.people_num = people_num;
+                            model.is_deadline = is_deadline;
                             model.writer = writer;
                             model.contact = contact;
 
@@ -237,8 +238,8 @@ UPDATE
 SET
     field = '{field}',
     description = '{description}',
-    people_num = '{peopleNum}',
-    is_deadline = '{isDeadline}',
+    people_num = '{people_num}',
+    is_deadline = '{is_deadline}',
     contact = '{contact}'
 WHERE
     writer = '{writer}'
@@ -277,7 +278,6 @@ AND
                 return new Response { message = ResponseMessage.BAD_REQUEST, status = ResponseStatus.BAD_REQUEST };
             }
         }
-
-
+        #endregion
     }
 }

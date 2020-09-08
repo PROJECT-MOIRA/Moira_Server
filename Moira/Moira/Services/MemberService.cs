@@ -19,7 +19,7 @@ namespace Moira.Services
         public DBManager<MemberModel> memberDBManager = new DBManager<MemberModel>();
 
         #region Member_Service
-        public async Task<Response> SignUp(string id, string pw, string name, string grade, string contact, string email)
+        public async Task<Response> SignUp(string id, string pw, string grade, string contact, string name, string email)
         {
             if (id != null && pw != null && name != null && grade != null && contact != null && email != null &&
                     id.Trim().Length > 0 && pw.Trim().Length > 0 && name.Trim().Length > 0 && grade.Trim().Length > 0 &&
@@ -92,7 +92,9 @@ VALUES(
                         string selectSql = $@"
 SELECT
     name, 
-    email
+    email,
+    grade,
+    contact
 FROM 
     member_tb
 WHERE
@@ -105,6 +107,8 @@ AND
                         if (response != null) // 회원정보 조회 시, 값이 제대로 들어왔는지 확인.
                         {
                             user.id = id;
+                            user.contact = response.contact;
+                            user.grade = response.grade;
                             user.name = response.name;
                             user.email = response.email;
 
