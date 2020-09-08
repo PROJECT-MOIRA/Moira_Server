@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Moira
+namespace Moira.Services
 {
-    class Program
+    class JobService
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
