@@ -1,5 +1,6 @@
 ﻿using Moira.Models;
 using Moira.Models.Job;
+using Moira.Models.Portfolio;
 using Moira.Models.Study;
 using System.Collections.Generic;
 using System.ServiceModel;
@@ -39,6 +40,18 @@ namespace Moira.Interface
         Task<Response<MemberModel>> Login(string id, string pw);
         #endregion
 
+        #region Portfolio_Service
+        [OperationContract]
+        [WebInvoke(Method = "GET", ResponseFormat = WebMessageFormat.Json,
+                   BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/portfolio/{writer}")]
+        Task<Response<List<PortfolioModel>>> GetPortfolioInfos(string writer);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
+                   BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/portfolio")]
+        Task<Response> WritePortfolio(string writer, string description, string github, string blog, string rocketpunch);
+        #endregion
+
         #region Job_Service
         /// <summary>
         /// 전체 구인구직 게시글 조회 API
@@ -61,7 +74,7 @@ namespace Moira.Interface
         /// <returns></returns>
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/job")]
-        Task<Response> WriteJob(string field, string description, int people_num, string is_deadline, string writer, string contact);
+        Task<Response> WriteJob(string field, string description, int people_num, int is_deadline, string writer, string contact, string title);
 
         /// <summary>
         /// 구인구직 게시글 삭제 API
@@ -86,7 +99,18 @@ namespace Moira.Interface
         /// <returns></returns>
         [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/job")]
-        Task<Response> UpdateJob(string field, string description, int people_num, string is_deadline, string wrtier, string contact, int job_idx);
+        Task<Response> UpdateJob(string field, string description, int people_num, int is_deadline, string wrtier, string contact, int job_idx);
+
+        /// <summary>
+        /// 특정 구인구직 게시물 마감 API
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="is_deadline"></param>
+        /// <param name="job_idx"></param>
+        /// <returns></returns>
+        [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
+                   BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/job/deadline")]
+        Task<Response> SetJobDeadLine(string writer, int is_deadline, int job_idx);
         #endregion
 
         #region Study_Service
@@ -111,7 +135,7 @@ namespace Moira.Interface
         /// <returns></returns>
         [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/study")]
-        Task<Response> WriteStudy(string subject, int people_num, string schedule_description, string is_deadline, string writer, string contact);
+        Task<Response> WriteStudy(string subject, int people_num, string schedule_description, int is_deadline, string writer, string contact, string title);
 
         ///// <summary>
         ///// 스터디 게시물 삭제 API
@@ -136,7 +160,23 @@ namespace Moira.Interface
         /// <returns></returns>
         [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/study")]
-        Task<Response> UpdateStudy(string subject, int people_num, string schedule_description, string writer, string contact, string is_deadline, int study_idx);
+        Task<Response> UpdateStudy(string subject, int people_num, string schedule_description, string writer, string contact, int is_deadline, int study_idx);
+
+        /// <summary>
+        /// 특정 스터디 게시물 마감여부 설정 API
+        /// </summary>
+        /// <param name = "writer" ></ param >
+        /// < param name="is_deadline"></param>
+        /// <param name = "study_idx" ></ param >
+        /// < returns ></ returns >
+        [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
+                   BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/study/deadline")]
+        Task<Response> SetStudyDeadLine(string writer, int is_deadline, int study_idx);
+        #endregion
+
+        #region Participation_Service
+        //[WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
+        //           BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/")]
         #endregion
     }
 

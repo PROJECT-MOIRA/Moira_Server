@@ -120,6 +120,7 @@
     <Compile Include="JWT\Models\JWTContainerModel.cs" />
     <Compile Include="Models\Job\JobModel.cs" />
     <Compile Include="Models\Member\MemberModel.cs" />
+    <Compile Include="Models\Portfolio\Portfolio.cs" />
     <Compile Include="Models\Study\StudyModel.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,8 +133,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\Portfolio\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

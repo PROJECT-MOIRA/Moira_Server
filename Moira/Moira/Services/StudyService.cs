@@ -68,7 +68,7 @@ FROM
             }
         }
 
-        public async Task<Response> WriteStudy(string subject, int people_num, string schedule_description, string is_deadline, string writer, string contact)
+        public async Task<Response> WriteStudy(string subject, int people_num, string schedule_description, int is_deadline, string writer, string contact, string title)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
@@ -76,7 +76,7 @@ FROM
             // Header에 토큰 값이 제대로 들어왔는지 확인 & 토큰이 유효한지 확인
             if (!(requestHeaderValue == null) && ComDef.jwtService.IsTokenValid(requestHeaderValue) == true)
             {
-                if (subject != null && subject.ToString().Length > 0 && people_num.ToString().Length > 0 &&
+                if (subject != null && subject.ToString().Length > 0 && people_num.ToString().Length > 0 && title != null && title.Length > 0 &&
                     schedule_description != null && schedule_description.Length > 0 && is_deadline.ToString().Length > 0 && writer != null && contact != null)
                 {
                     try
@@ -92,6 +92,7 @@ FROM
                             model.is_deadline = is_deadline;
                             model.writer = writer;
                             model.contact = contact;
+                            model.title = title;
 
                             string insertSql = @"
 INSERT INTO study_tb(
@@ -100,7 +101,8 @@ INSERT INTO study_tb(
     people_num,
     is_deadline,
     writer,
-    contact
+    contact,
+    title
 )
 VALUES(
     @subject,
@@ -108,7 +110,8 @@ VALUES(
     @people_num,
     @is_deadline,
     @writer,
-    @contact
+    @contact,
+    @title
 );";
                             if (await jobDBManager.InsertAsync(db, insertSql, model) == 1)
                             {
@@ -204,7 +207,7 @@ AND
             }
         }
 
-        public async Task<Response> UpdateStudy(string subject, int people_num, string schedule_description, string writer, string contact, string is_deadline, int study_idx)
+        public async Task<Response> UpdateStudy(string subject, int people_num, string schedule_description, string writer, string contact, int is_deadline, int study_idx)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
             string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
@@ -274,6 +277,70 @@ AND
             else // Header에 토큰이 전송되지 않음 or 토큰이 유요하지 않음. => 검증 오류.
             {
                 Console.WriteLine("스터디 게시글 수정 : " + ResponseStatus.BAD_REQUEST);
+                return new Response { message = ResponseMessage.BAD_REQUEST, status = ResponseStatus.BAD_REQUEST };
+            }
+        }
+
+        public async Task<Response> SetStudyDeadLine(string writer, int is_deadline, int study_idx)
+        {
+            WebOperationContext webOperationContext = WebOperationContext.Current;
+            string requestHeaderValue = webOperationContext.IncomingRequest.Headers["token"].ToString();
+
+            // Header에 토큰 값이 제대로 들어왔는지 확인 & 토큰이 유효한지 확인
+            if (!(requestHeaderValue == null) && ComDef.jwtService.IsTokenValid(requestHeaderValue) == true)
+            {
+                if (writer != null && writer.Length > 0 && is_deadline.ToString() != null && is_deadline.ToString().Length > 0 && study_idx.ToString() != null && study_idx.ToString().Length > 0)
+                {
+                    try
+                    {
+                        using (IDbConnection db = new MySqlConnection(ComDef.DATA_BASE_URL))
+                        {
+                            db.Open();
+
+                            var model = new StudyModel();
+                            model.writer = writer;
+                            model.study_idx = study_idx;
+                            model.is_deadline = is_deadline;
+
+                            string updateSql = $@"
+UPDATE 
+    study_tb
+SET
+    is_deadline = '{is_deadline}'
+WHERE
+    writer = '{writer}'
+AND
+    study_idx = '{study_idx}'
+;";
+                            if (await jobDBManager.UpdateAsync(db, updateSql, model) == 1)
+                            {
+                                await jobDBManager.IndexSortSqlAsync(db, updateSql);
+                                Console.WriteLine("특정 스터디 게시글 마감여부 수정 : " + ResponseStatus.OK);
+                                return new Response { message = ResponseMessage.OK, status = ResponseStatus.OK };
+                            }
+                            else
+                            {
+                                Console.WriteLine("특정 스터디 게시글 마감여부 수정 : " + ResponseStatus.BAD_REQUEST);
+                                return new Response { message = ResponseMessage.BAD_REQUEST, status = ResponseStatus.BAD_REQUEST };
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("특정 스터디 게시글 마감여부 수정 : " + ResponseStatus.INTERNAL_SERVER_ERROR);
+                        Console.WriteLine("SEPECIFIC STUDY UPDATE ERROR : " + e.Message);
+                        return new Response { message = ResponseMessage.INTERNAL_SERVER_ERROR, status = ResponseStatus.INTERNAL_SERVER_ERROR };
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("특정 스터디 게시글 마감여부 수정 : " + ResponseStatus.BAD_REQUEST);
+                    return new Response { message = ResponseMessage.BAD_REQUEST, status = ResponseStatus.BAD_REQUEST };
+                }
+            }
+            else
+            {
+                Console.WriteLine("특정 스터디 게시글 마감여부 수정 : " + ResponseStatus.BAD_REQUEST);
                 return new Response { message = ResponseMessage.BAD_REQUEST, status = ResponseStatus.BAD_REQUEST };
             }
         }

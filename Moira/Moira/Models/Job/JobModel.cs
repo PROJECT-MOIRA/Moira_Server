@@ -12,8 +12,9 @@ namespace Moira.Models.Job
         public string field { get; set; }
         public string description { get; set; }
         public int people_num { get; set; }
-        public string is_deadline { get; set; }
+        public int is_deadline { get; set; }
         public string writer { get; set; }
         public string contact { get; set; }
+        public string title { get; set; }
     }
 }
