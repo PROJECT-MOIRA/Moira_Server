@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Moira.Models.Job
+namespace Moira.Models.Study
 {
-    public class JobModel
+    public class StudyModel
     {
-        public int job_idx { get; set; }
-        public string field { get; set; }
-        public string description { get; set; }
+        public int study_idx { get; set; }
+        public string subject { get; set; }
         public int people_num { get; set; }
-        public bool is_deadline { get; set; }
+        public string schedule_description { get; set; }
         public string writer { get; set; }
         public string contact { get; set; }
     }

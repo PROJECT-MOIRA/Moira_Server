@@ -53,12 +53,13 @@ namespace Moira.Interface
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="writer"></param>
         /// <param name="jobIdx"></param>
         /// <returns></returns>
         [WebInvoke(Method = "DELETE", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "/job")]
         [return: MessageParameter(Name = "Delete Job")]
-        Task<Response> DeleteJob(int jobIdx);
+        Task<Response> DeleteJob(string writer, int jobIdx);
 
         /// <summary>
         /// 
@@ -67,7 +68,7 @@ namespace Moira.Interface
         [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.Wrapped, UriTemplate = "/job")]
         [return: MessageParameter(Name = "Update Job")]
-        Task<Response<JobModel>> UpdateJob();
+        Task<Response> UpdateJob(string field, string description, int peopleNum, bool isDeadline, string wrtier, string contact, int job_idx);
         #endregion
     }
 
