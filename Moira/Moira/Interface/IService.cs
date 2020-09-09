@@ -111,6 +111,16 @@ namespace Moira.Interface
         [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/job/deadline")]
         Task<Response> SetJobDeadLine(string writer, int is_deadline, int job_idx);
+
+        /// <summary>
+        /// 구인구직 참여 API
+        /// </summary>
+        /// <param name="member_idx"></param>
+        /// <param name="job_idx"></param>
+        /// <returns></returns>
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Json,
+                   BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/job/join")]
+        Task<Response> ParticipateJob(int member_idx, int job_idx);
         #endregion
 
         #region Study_Service
@@ -172,11 +182,6 @@ namespace Moira.Interface
         [WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
                    BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/study/deadline")]
         Task<Response> SetStudyDeadLine(string writer, int is_deadline, int study_idx);
-        #endregion
-
-        #region Participation_Service
-        //[WebInvoke(Method = "PUT", ResponseFormat = WebMessageFormat.Json,
-        //           BodyStyle = WebMessageBodyStyle.WrappedRequest, UriTemplate = "/")]
         #endregion
     }
 

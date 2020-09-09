@@ -118,6 +118,7 @@
     <Compile Include="JWT\Services\JWTService.cs" />
     <Compile Include="JWT\Models\IAuthContainerModel.cs" />
     <Compile Include="JWT\Models\JWTContainerModel.cs" />
+    <Compile Include="Models\JobJoin\JobJoinModel.cs" />
     <Compile Include="Models\Job\JobModel.cs" />
     <Compile Include="Models\Member\MemberModel.cs" />
     <Compile Include="Models\Portfolio\Portfolio.cs" />

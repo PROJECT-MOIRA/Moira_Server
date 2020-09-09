@@ -1,17 +1,12 @@
 ﻿using Moira.Common;
 using Moira.DatabBase;
 using Moira.Interface;
-using Moira.Models;
-using Moira.Models.Job;
 using Moira.Models.Portfolio;
-using Moira.Models.Study;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.ServiceModel.Web;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Moira.Services
@@ -20,6 +15,7 @@ namespace Moira.Services
     {
         public DBManager<PortfolioModel> portfolioDBManager = new DBManager<PortfolioModel>();
 
+        #region Portfolio_Service
         public async Task<Response<List<PortfolioModel>>> GetPortfolioInfos(string writer)
         {
             WebOperationContext webOperationContext = WebOperationContext.Current;
@@ -154,5 +150,6 @@ VALUES(
                 return new Response { message = ResponseMessage.BAD_REQUEST, status = ResponseStatus.BAD_REQUEST };
             }
         }
+        #endregion
     }
 }
